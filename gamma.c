@@ -49,8 +49,8 @@ int main() {
         //TODO: >= o >?
         if (leading + compensacion > 16)
         {
-            printf("leading: %d\n", leading);
-            printf("C\n");
+            //printf("leading: %d\n", leading);
+            //printf("C\n");
             if (i+1 >= MAX_SIZE)
             {
                 printf("stop 4\n");
@@ -71,7 +71,7 @@ int main() {
         //caso donde el leading esta en un solo elemento de la lista pero el resto esta repartido
         if (compensacion + 1 + 2*leading > 16) //necesitamos los primeros 2*leading + 1 - (16 - compensacion) digitos del siguiente valor
         {
-            printf("B\n");
+            //printf("B\n");
             temp2 = list[i+1]; 
             temp2 = temp2 >> (16 - (2*leading + 1 - (16 - compensacion)));
             temp = temp << (leading + 1);
@@ -94,7 +94,7 @@ int main() {
 
         }
         
-        printf("A\n");
+        //printf("A\n");
         //Caso standard donde todo el numero esta en el mismo elemento de la lista
         
         d = 15 - (2 * leading);
