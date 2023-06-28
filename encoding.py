@@ -19,12 +19,12 @@ all = ""
 for elem in encoded:
     all += elem
 
-while len(all) % 16 != 0:
+while len(all) % 32 != 0:
     all = all + "0"
 
 i = 0
-while i < len(all)/16:
-    print("list[" + str(i) + "] = 0b" + all[16*(i): 16*(i+1)] + ";")
+while i < len(all)/32:
+    print("list[" + str(i) + "] = 0b" + all[32*(i): 32*(i+1)] + ";")
     i = i+1
 
 print(encoded[-1])
