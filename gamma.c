@@ -3,16 +3,32 @@
 #include <math.h>
 #include <stdlib.h>
 //asumimos que estamos trabajando con binarios de 16 bits
-#define MAX_SIZE 6
+#define MAX_SIZE 22
 
 int main() {
     uint16_t list[MAX_SIZE];
-    list[0] = 0b0000100010000010;
-    list[1] = 0b0010000100100100;
-    list[2] = 0b0001000000000000;
-    list[3] = 0b1000000001000001;
-    list[4] = 0b0000000010010000;
-    list[5] = 0b0011000000000000;
+    list[0] = 0b0000011000100000;
+    list[1] = 0b0001010001010001;
+    list[2] = 0b1100000000011101;
+    list[3] = 0b1111000110000000;
+    list[4] = 0b0001000110100000;
+    list[5] = 0b1010100000111010;
+    list[6] = 0b0000010100100000;
+    list[7] = 0b1101110000001100;
+    list[8] = 0b0100110000101000;
+    list[9] = 0b0000110110000000;
+    list[10] = 0b1000000000000001;
+    list[11] = 0b0010010100101000;
+    list[12] = 0b0010010000000101;
+    list[13] = 0b0100000011100000;
+    list[14] = 0b0000010111001000;
+    list[15] = 0b0000011111001000;
+    list[16] = 0b0001101100000001;
+    list[17] = 0b0011000000010011;
+    list[18] = 0b1000000100111100;
+    list[19] = 0b0010110000001000;
+    list[20] = 0b1000101000000010;
+    list[21] = 0b0111010000000000;
 
     int i = 0;
     int leading = 0; //cantidad de 0's antes del primer 1
@@ -29,7 +45,7 @@ int main() {
         //sin considerar lo anterios
         if (compensacion == 16)
         {
-            
+            //printf("reset\n");
             i = i + 1;
             compensacion = 0;
             if (i >= MAX_SIZE)
@@ -76,10 +92,13 @@ int main() {
             temp2 = temp2 >> (16 - (2*leading + 1 - (16 - compensacion)));
             temp = temp << (leading + 1);
             temp = temp >> (leading + 1 + compensacion);
-            temp = temp << leading;
+            temp = temp << (leading - (16 - (leading + 1 + compensacion)));
+            //temp = temp << (16 - (leading + 1 + compensacion));
+            //printf("i: %d\n", i);
             //printf("leading: %u\n", leading);
             //printf("temp: %u\n", temp);
             //printf("temp2: %u\n", temp2);
+            //printf("compensacion: %u\n", compensacion);
             decoded_int = pow(2, leading) + (int)(temp + temp2);
             printf("Numero decodificado: %u\n", decoded_int);
             i = i + 1;
