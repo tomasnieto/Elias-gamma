@@ -33,10 +33,10 @@ int main(int argc, char* argv[]) {
         uint32_t value = 0;
 
         for (int j = 0; binarySequence[j] != '\0'; j++) {
-            value <<= 1;  // Left-shift the value by 1 to make room for the next bit
+            value <<= 1;
 
             if (binarySequence[j] == '1') {
-                value |= 1;  // Set the least significant bit to 1
+                value |= 1;  
             }
         }
 

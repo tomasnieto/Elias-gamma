@@ -12,3 +12,11 @@ Ejecutar (ejemplo adjuntado)
 
 Probado en Ubuntu 22.04.1 LTS
 
+## Generador de pruebas
+
+Usar test.txt para escribir los int
+
+Ejecutar el .py para crear el generador.txt que tendrá los int codificados
+y para usarlos como argumento en runtime al correr gamma.c
+
+
