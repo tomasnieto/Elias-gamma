@@ -22,7 +22,7 @@ for elem in encoded:
 while len(all) % 32 != 0:
     all = all + "0"
 
-with open("out.txt", "w") as o:
+with open("generador.txt", "w") as o:
     i = 0
     while i < len(all)/32:
         o.write(all[32*(i): 32*(i+1)] + " ")
