@@ -22,9 +22,11 @@ for elem in encoded:
 while len(all) % 32 != 0:
     all = all + "0"
 
-i = 0
-while i < len(all)/32:
-    print("list[" + str(i) + "] = 0b" + all[32*(i): 32*(i+1)] + ";")
-    i = i+1
+with open("out.txt", "w") as o:
+    i = 0
+    while i < len(all)/32:
+        o.write(all[32*(i): 32*(i+1)] + " ")
+        print("list[" + str(i) + "] = 0b" + all[32*(i): 32*(i+1)] + ";")
+        i = i+1
 
 print(encoded[-1])
