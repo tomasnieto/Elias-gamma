@@ -2,34 +2,48 @@
 #include <stdint.h>
 #include <math.h>
 #include <stdlib.h>
-//asumimos que estamos trabajando con binarios de 32 bits
+#include <time.h>
+#include <string.h>
 
+void writeToFile(const char* content) {
+    //printf("%s\n", content);
+    FILE* file = fopen("out.txt", "a");
+    
+    if (file != NULL) {
+        fputs(content, file);
+        fputs("\n", file);
+        
+        fclose(file);
+    }
+    else {
+        printf("Unable to open the file.\n");
+    }
+}
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {printf("Debe proporcionar la secuencia de bits como argumento.\n");return 1;}
+    if (argc < 3) {printf("Debe proporcionar la secuencia de bits como argumento.\n");return 1;}
+    clock_t start_time, end_time;
+    double execution_time;
+    start_time = clock();
 
-    #define MAX_SIZE argc - 1
-    //uint32_t list[argc-1];
-    /*list[0] = 0b00000110001000000001010001010001;
-    list[1] = 0b11000000000111011111000110000000;
-    list[2] = 0b00010001101000001010100000111010;
-    list[3] = 0b00000101001000001101110000001100;
-    list[4] = 0b01001100001010000000110110000000;
-    list[5] = 0b10000000000000010010010100101000;
-    list[6] = 0b00100100000001010100000011100000;
-    list[7] = 0b00000101110010000000011111001000;
-    list[8] = 0b00011011000000010011000000010011;
-    list[9] = 0b10000001001111000010110000001000;
-    list[10] = 0b10001010000000100111010000000000;*/
+    FILE* file = fopen("out.txt", "w");
+    fclose(file);
 
-    uint32_t* list = (uint32_t*)malloc((argc - 1) * sizeof(uint32_t));
+    #define MAX_SIZE (argc - 2)
+    #define STRING_LENGTH 20
+
+    uint32_t* list = (uint32_t*)malloc((argc - 2) * sizeof(uint32_t));
+    const int numeroDeElemetos = atoi(argv[1]);
+    char out[numeroDeElemetos][STRING_LENGTH + 1];
+    
+
     if (list == NULL) {
         printf("Error: No se pudo asignar memoria para la lista.\n");
         return 1;
     }
 
-    for (int i = 1; i < argc; i++) {
-        const char* binarySequence = argv[i];
+    for (int i = 1; i + 1 < argc; i++) {
+        const char* binarySequence = argv[i+1];
         uint32_t value = 0;
 
         for (int j = 0; binarySequence[j] != '\0'; j++) {
@@ -44,6 +58,7 @@ int main(int argc, char* argv[]) {
     }
 
     int i = 0;
+    int l = 0;
     int leading = 0; //cantidad de 0's antes del primer 1
     uint32_t temp = 0b00000000000000000000000000000000;
     uint32_t temp2 = 0b00000000000000000000000000000000;
@@ -51,6 +66,7 @@ int main(int argc, char* argv[]) {
     int decoded_int = 0;
     int compensacion = 0;
     int leading2 = 0;
+    char content[20];
 
     while (1){
         //caso donde la compensacion indica un salto del int entero, 
@@ -58,13 +74,11 @@ int main(int argc, char* argv[]) {
         //sin considerar lo anterior
         if (compensacion == 32)
         {
-            //printf("reset\n");
             i = i + 1;
             compensacion = 0;
             if (i >= MAX_SIZE)
             {
-                //printf("stop 3\n");
-                return 1;
+                break;
             }
             continue;
         }
@@ -77,73 +91,71 @@ int main(int argc, char* argv[]) {
         }
         else
         {
-            leading = __builtin_clz(temp) ;//- 16;
+            leading = __builtin_clz(temp) ;
         }
 
         //caso donde el leading esta repartido en dos elementos de la lista
         if (leading + compensacion >= 32)
         {
-            //printf("leading: %d\n", leading);
-            //printf("C\n");
             if (i+1 >= MAX_SIZE)
             {
-                //printf("stop 4\n");
-                return 1;
+                break;
             }
             temp2 = list[i+1];
-            leading2 = __builtin_clz(temp2); // - 16;
+            leading2 = __builtin_clz(temp2);
             temp2 = temp2 << (leading2 + 1);
             temp2 = temp2 >> (32 - (leading2 + leading));
             decoded_int = pow(2, (leading2 + leading)) + (int)temp2;
-            //printf("i: %d\n", i);
-            //printf("leading: %u\n", leading);
-            //printf("leading2: %u\n", leading2);
-            //printf("temp: %u\n", temp);
-            //printf("temp2: %u\n", temp2);
-            //printf("compensacion: %u\n", compensacion);
-            printf("Numero decodificado: %u\n", decoded_int);
             i = i + 1;
-            compensacion = leading2 + 1 + leading2 + leading ;//- compensacion + 1;
-            continue;
+            compensacion = leading2 + 1 + leading2 + leading ;
         }
 
         //caso donde el leading esta en un solo elemento de la lista pero el resto esta repartido
-        if (compensacion + 1 + 2*leading > 32) //necesitamos los primeros 2*leading + 1 - (16 - compensacion) digitos del siguiente valor
+        else if(compensacion + 1 + 2*leading > 32)
         {
-            //printf("B\n");
             temp2 = list[i+1]; 
             temp2 = temp2 >> (32 - (2*leading + 1 - (32 - compensacion)));
             temp = temp << (leading + 1);
             temp = temp >> (leading + 1 + compensacion);
             temp = temp << (leading - (32 - (leading + 1 + compensacion)));
-            //printf("i: %d\n", i);
-            //printf("leading: %u\n", leading);
-            //printf("temp: %u\n", temp);
-            //printf("temp2: %u\n", temp2);
-            //printf("compensacion: %u\n", compensacion);
             decoded_int = pow(2, leading) + (int)(temp + temp2);
-            printf("Numero decodificado: %u\n", decoded_int);
             i = i + 1;
             if (i >= MAX_SIZE)
             {
-                //printf("stop 1\n");
-                return 1;
+                break;
             }
             compensacion = (2*leading + 1 - (32 - compensacion));
-            continue;
         }
+        else
+        {
+            //Caso standard donde todo el numero esta en el mismo elemento de la lista
+            
+            temp = temp << (leading + 1);
+            if (leading == 0)
+            {
+                temp = temp >> (31);
+                compensacion += 1;
+                decoded_int = (int)temp;
+            }else
+            {
+                temp = temp >> (32 - leading);
+                decoded_int = pow(2, leading) + (int)temp;
+            }
+            
+            compensacion = compensacion + 2*(leading) + 1;
+        }
+        
+        sprintf(content, "%d", decoded_int);
+        strcpy(out[l], content);
+        l += 1;
+    }
 
-        //printf("A\n");
-        //Caso standard donde todo el numero esta en el mismo elemento de la lista
-        //printf("i: %d\n", i);
-        //printf("leading: %u\n", leading);
-        //printf("temp: %u\n", temp);
-        //printf("compensacion: %u\n", compensacion);
-        temp = temp << (leading + 1);
-        temp = temp >> (leading + 32 - (2 * leading));
-        decoded_int = pow(2, leading) + (int)temp;
-        printf("Numero decodificado: %u\n", decoded_int);
-        compensacion = compensacion + 2*(leading) + 1;
+    end_time = clock();
+    execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Execution Time: %.4f seconds\n%d", execution_time, l);
+    for (int k = 0; k < numeroDeElemetos; k++)
+    {
+        writeToFile(out[k]);
     }
 
     free(list);

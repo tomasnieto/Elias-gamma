@@ -1,9 +1,15 @@
 import math
 
 def code(number):
-    exp = int(math.floor(math.log2(number)))
-    gamma = number - int(math.pow(2, exp))
+    exp = 0
+    if number != 0:
+        exp = int(math.floor(math.log2(number)))
+        gamma = number - int(math.pow(2, exp))
+    if number == 1 or number == 0:
+        gamma = number
+
     xd = (str(bin(gamma))[2:])
+
     xd = "0"*(exp - len(xd)) + xd
     coding = "0"*exp + "1" + xd
     return coding
