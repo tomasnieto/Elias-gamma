@@ -1,4 +1,11 @@
+import random
 import math
+
+def write_numbers(n):
+    with open("test.txt", 'w') as file:
+        for _ in range(n):
+            number = random.randint(0, 4095)
+            file.write(str(number) + "\n")
 
 def code(number):
     exp = 0
@@ -14,6 +21,8 @@ def code(number):
     coding = "0"*exp + "1" + xd
     return coding
 
+
+write_numbers(int(input("cantidad de números: ")))
 
 encoded =[]
 

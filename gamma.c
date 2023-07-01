@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
     end_time = clock();
     execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    printf("Execution Time: %.4f seconds\n%d", execution_time, l);
+    printf("Execution Time: %.4f seconds\n", execution_time);
     for (int k = 0; k < numeroDeElemetos; k++)
     {
         writeToFile(out[k]);
