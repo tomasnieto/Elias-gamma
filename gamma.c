@@ -111,19 +111,29 @@ int main(int argc, char* argv[]) {
         }
 
         //caso donde el leading esta en un solo elemento de la lista pero el resto esta repartido
-        else if(compensacion + 1 + 2*leading > 32)
+        else if(compensacion + 1 + 2*leading > 32 || (compensacion == 31 && leading == 0))
         {
-            temp2 = list[i+1]; 
-            temp2 = temp2 >> (32 - (2*leading + 1 - (32 - compensacion)));
-            temp = temp << (leading + 1);
-            temp = temp >> (leading + 1 + compensacion);
-            temp = temp << (leading - (32 - (leading + 1 + compensacion)));
-            decoded_int = pow(2, leading) + (int)(temp + temp2);
             i = i + 1;
             if (i >= MAX_SIZE)
             {
                 break;
             }
+            temp2 = list[i]; 
+            temp2 = temp2 >> (32 - (2*leading + 1 - (32 - compensacion)));
+            temp = temp << (leading + 1);
+            if (leading == 0)
+            {
+                temp2 = temp2 >> (31);
+                compensacion += 1;
+                decoded_int = (int)temp2;
+            }else
+            {
+                temp = temp >> (leading + 1 + compensacion);
+                temp = temp << (leading - (32 - (leading + 1 + compensacion)));
+                decoded_int = pow(2, leading) + (int)(temp + temp2);
+            }
+            
+            
             compensacion = (2*leading + 1 - (32 - compensacion));
         }
         else
