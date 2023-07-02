@@ -15,7 +15,7 @@ Probado en Ubuntu 22.04.1 LTS
 ## Generador de pruebas
 
 Usar test_maker.py para escribir los int en test.txt y crear el generador.txt que tendrá los int codificados
-para usarlos como argumento en runtime al correr gamma.c
+para usarlos como argumento en runtime al correr gamma.c (0 no es decodificable por elias-gamma)
 
 Despues de que se genere out.txt, pueden compararlo con test.txt usando check.py
 

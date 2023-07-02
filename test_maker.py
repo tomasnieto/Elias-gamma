@@ -4,16 +4,13 @@ import math
 def write_numbers(n):
     with open("test.txt", 'w') as file:
         for _ in range(n):
-            number = random.randint(0, 4095)
+            number = random.randint(1, 1023)
             file.write(str(number) + "\n")
 
 def code(number):
-    exp = 0
-    if number != 0:
-        exp = int(math.floor(math.log2(number)))
-        gamma = number - int(math.pow(2, exp))
-    if number == 1 or number == 0:
-        gamma = number
+    if number == 1: return "1"
+    exp = int(math.floor(math.log2(number)))
+    gamma = number - int(math.pow(2, exp))
 
     xd = (str(bin(gamma))[2:])
 

@@ -1,12 +1,9 @@
 import math
 
 def code(number):
-    exp = 0
-    if number != 0:
-        exp = int(math.floor(math.log2(number)))
-        gamma = number - int(math.pow(2, exp))
-    if number == 1 or number == 0:
-        gamma = number
+    if number == 1: return "1"
+    exp = int(math.floor(math.log2(number)))
+    gamma = number - int(math.pow(2, exp))
 
     xd = (str(bin(gamma))[2:])
 
