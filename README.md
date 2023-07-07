@@ -4,7 +4,8 @@
 
 Compilar
 
-`gcc -o a gamma.c -lm`
+`gcc -O3 gamma.c -o a -lm`
+
 
 Ejecutar (ejemplo adjuntado, 41 indica la cantidad de números a decodificar)
 

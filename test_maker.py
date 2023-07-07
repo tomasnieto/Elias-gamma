@@ -4,7 +4,7 @@ import math
 def write_numbers(n):
     with open("test.txt", 'w') as file:
         for _ in range(n):
-            number = random.randint(1, 1023)
+            number = random.randint(1, 4097)
             file.write(str(number) + "\n")
 
 def code(number):
