@@ -19,7 +19,19 @@ void writeToFile(const char* content) {
     }
 }
 
-char** processList(uint32_t* list, int size, int NumeroElementos) {
+
+/*
+DecodeGammas
+*Input:
+--------------
+    list: Lista de valores uint32_t
+    size: int, tamaño de list
+    NumeroElementos: int, cantidad de numeros codificados en la lista
+--------------
+Output:
+    out: lista de gammas decodificados
+*/
+char** DecodeGammas(uint32_t* list, int size, int NumeroElementos) {
     #define STRING_LENGTH 20
 
     char** out = (char**)malloc(NumeroElementos * sizeof(char*));
@@ -141,7 +153,7 @@ int main(int argc, char* argv[]) {
         list[i - 1] = value;
     }
 
-    char** out = processList(list, argc - 2, numeroDeElementos);
+    char** out = DecodeGammas(list, argc - 2, numeroDeElementos);
     
     end_time = clock();
     for (int k = 0; k < numeroDeElementos; k++) {
